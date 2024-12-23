@@ -4,7 +4,7 @@
 
     // Función para obtener un valor aleatorio dentro de un rango
     function getRandomArbitrary(min, max) {
-        return Math.round(Math.random() * (max - min)) + min;
+        return Math.random() * (max - min) + min;
     }
 
     // Crear las flores
@@ -49,9 +49,8 @@
         svgContainer.setAttribute("width", "300");
         svgContainer.setAttribute("height", "200");
         svgContainer.style.position = "absolute";
-        svgContainer.style.left = `${getRandomArbitrary(groundRect.left, groundRect.right)}px`;
-        
-        svgContainer.style.bottom = `${getRandomArbitrary(0, -100)}px`; // Ajustamos la altura sobre el área verde
+        svgContainer.style.left = `${getRandomArbitrary(groundRect.left, groundRect.right - 300)}px`; // Aseguramos que no se salga de la pantalla
+        svgContainer.style.bottom = `${getRandomArbitrary(0, -50)}px`; // Ajustamos la altura sobre el área verde
 
         // Punto de inicio fijo para las ramas
         const startX = 150;
@@ -77,6 +76,11 @@
             for (let i = 0; i < numOfFlowers / numOfBranches; i++) {
                 let flowerX = endX + getRandomArbitrary(-15, 15);
                 let flowerY = endY + getRandomArbitrary(-15, 15);
+
+                // Evitar que las flores se salgan de los límites del contenedor
+                flowerX = Math.max(0, Math.min(flowerX, window.innerWidth));  // Asegura que flowerX esté dentro del ancho visible
+                flowerY = Math.max(0, Math.min(flowerY, window.innerHeight)); // Asegura que flowerY esté dentro de la altura visible
+
                 let flower = createFlower(flowerX, flowerY);
                 svgContainer.appendChild(flower);
             }
@@ -87,7 +91,7 @@
 
     // Crear las estrellas en el fondo
     function createStars() {
-        const html = document.documentElement; // Selecciona el <html> para añadir las estrellas
+        const sky = document.getElementById("sky");
 
         const numStars = 100; // Número de estrellas a crear
         for (let i = 0; i < numStars; i++) {
@@ -101,13 +105,13 @@
             star.style.left = `${xPos}px`;
             star.style.top = `${yPos}px`;
 
-            html.appendChild(star);
+            sky.appendChild(star);
         }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
         // Crear las estrellas cuando la página se cargue
         createStars();
-        document.body.addEventListener("click", growGarden); // Esto agrega las flores al hacer clic
+        document.body.addEventListener("click", growGarden);
     });
 })();
