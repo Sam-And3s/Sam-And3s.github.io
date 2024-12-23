@@ -49,8 +49,16 @@
         svgContainer.setAttribute("width", "300");
         svgContainer.setAttribute("height", "200");
         svgContainer.style.position = "absolute";
-        svgContainer.style.left = `${getRandomArbitrary(groundRect.left, groundRect.right - 300)}px`; // Aseguramos que no se salga de la pantalla
-        svgContainer.style.bottom = `${getRandomArbitrary(0, -50)}px`; // Ajustamos la altura sobre el área verde
+        
+        // Ajuste de la posición X, asegurando que el jardín no se salga del área verde
+        let maxLeft = groundRect.right - 300; // 300 es el ancho del contenedor SVG
+        let leftPosition = getRandomArbitrary(groundRect.left, maxLeft);
+        svgContainer.style.left = `${leftPosition}px`;
+        
+        // Ajuste de la posición Y, asegurando que el jardín no se salga del área verde
+        let maxBottom = groundRect.top - 200; // 200 es la altura del contenedor SVG
+        let bottomPosition = getRandomArbitrary(groundRect.bottom - 200, groundRect.bottom);
+        svgContainer.style.bottom = `${bottomPosition}px`;
 
         // Punto de inicio fijo para las ramas
         const startX = 150;
@@ -77,7 +85,7 @@
                 let flowerX = endX + getRandomArbitrary(-15, 15);
                 let flowerY = endY + getRandomArbitrary(-15, 15);
 
-                // Evitar que las flores se salgan de los límites del contenedor
+                // Evitar que las flores se salgan de los límites de la pantalla
                 flowerX = Math.max(0, Math.min(flowerX, window.innerWidth));  // Asegura que flowerX esté dentro del ancho visible
                 flowerY = Math.max(0, Math.min(flowerY, window.innerHeight)); // Asegura que flowerY esté dentro de la altura visible
 
